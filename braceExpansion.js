@@ -1,34 +1,48 @@
 var expand = function(S) {
-    let str = S;
- let result = [''];
-    let count = 0;
- 
-    let options = str.match(/{.*?}/g);  //[“{a,b}”,”{d,e}”] 
-    let strArray = str.match(/^{.*?}/g)//.split('0').filter(x => x != ''); //[‘0’,’c’,’0’,’f’]
-    let charQ = [];
+    let result = [''];
+    let options = S.match(/{.*?}/g);  //[“{a,b}”,”{d,e}”] 
+    let letters = S;
+    let letterArray = [];
+
     if (!options){
         return [str];
     }
+
+    options.forEach(option => letters = letters.replace(option, ''));
+    letters = letters.split('');
     options = options.map(s  => s.replace(/[^a-z]/g, '').split('')); //[[a,b], [d,e]]
  
-    if (str[0] === '{'){
-        charQ.push(options.shift());
+    if (S[0] === '{'){
+        letterArray.push(options.shift());
     }
 
-    while (options.length > 0 || strArray.length > 0){
-        if (strArray.length > 0){
-            charQ.push(strArray.shift());
+    while (options.length > 0 || letters.length > 0){
+        if (letters.length > 0){
+            letterArray.push(letters.shift());
         }
 
         if (options.length > 0){
-            charQ.push(options.shift());
+            letterArray.push(options.shift());
         }
     }
-    console.log(charQ)
     
+    letterArray.forEach(char => {
+        let tmp = [];
+        if (Array.isArray(char)){
+            char.forEach(option => {
+                result.forEach(string => tmp.push(string + option))
+            })
+        }else {
+            result.forEach(string => tmp.push(string + char))
+        }
+        result = tmp;
+        
+    })
+    console.log(result);
+    return result.sort();
 };
 
-console.log(expand("{a,b,c}d{e,f}"))
+expand("{a,b}d{e,f}");
 
 
 
@@ -65,5 +79,3 @@ console.log(expand("{a,b,c}d{e,f}"))
 //     });
 //     return result.sort();
 // };
-
-expand("{a,b,c}d{e,f}");
