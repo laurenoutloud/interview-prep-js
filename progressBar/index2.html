@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+    <title>Progress Bar</title>
+</head>
+<body>
+    <div class="bar-container">
+        <div class="bar"></div>
+    </div>
+    <button onclick="startProgressBar(2)">Start</button>
+</body>
+<style>
+    body {
+        background-color: lightgray;
+    }
+    .bar-container{
+        background-color: gray;
+        width: 200px;
+        height: 30px;
+        margin: 20px;
+    }
+    .bar {
+        background-color: green;
+        height: 100%;
+        width: 0;
+    }
+</style>
+<script>
+    function startProgressBar(seconds){
+        const bar = document.querySelector(".bar");
+        let percent = 0;
+        const interval = setInterval(() =>{
+            bar.style.width = percent + "%";
+            percent++;
+            if (percent > 100){
+                clearInterval(interval);
+            }
+        }, seconds * 10)
+    }
+</script>
+
+</html>
